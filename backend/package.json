@@ -1,0 +1,12 @@
+{
+  "name": "nodelink-backend",
+  "version": "1.0.0",
+  "description": "Backend for NodeLink WiFi scanning",
+  "main": "wifi-api.js",
+  "scripts": {
+    "test": "node test-wifi.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7"
+  }
+} 
