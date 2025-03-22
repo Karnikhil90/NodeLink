@@ -11,14 +11,64 @@
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- <link rel="manifest" href="/manifest.json"> -->
+
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
     />
     <title>NodeLink</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+      .network {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 4px;
+      }
+      .signal {
+        color: #666;
+      }
+      .password-required {
+        color: #e74c3c;
+        font-weight: bold;
+      }
+      #wifi-test {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- <div id="wifi-test">
+      <h1>WiFi Scanner Test</h1>
+      <button id="scanButton">Scan WiFi Networks</button>
+      <pre id="results"></pre>
+    </div> -->
+
+    <script>
+      $(document).ready(function() {
+        $('#scanButton').click(function() {
+          $('#results').text('Scanning...');
+          
+          $.get('http://192.168.1.8/wifi/scan')
+            .done(function(data) {
+              $('#results').text(JSON.stringify(data, null, 2));
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+              $('#results').text(`Error: ${textStatus}\n${errorThrown}`);
+            });
+        });
+      });
+    </script>
   </body>
 </html> 

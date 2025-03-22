@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WiFi Scanner Test</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .network {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .signal {
+            color: #666;
+        }
+        .password-required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>WiFi Scanner Test</h1>
+    <button id="scanButton">Scan WiFi Networks</button>
+    <div id="results"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#scanButton').click(function() {
+                $('#results').html('Scanning...');
+                
+                $.get('http://192.168.1.8/wifi/status')
+                    .done(function(data) {
+                        console.log(data);
+                        let html = '<h2>Available Networks:</h2>';
+                        data.forEach(function(network) {
+                            html += `
+                                <div class="network">
+                                    <strong>${network.SSID}</strong>
+                                    <div class="signal">Signal: ${network.Signal} dBm</div>
+                                    ${network.PasswordRequired ? 
+                                        '<div class="password-required">Password Required</div>' : 
+                                        '<div>Open Network</div>'}
+                                </div>
+                            `;
+                        });
+                        $('#results').html(html);
+                    })
+                    .fail(function(jqXHR, textStatus, errorThrown) {
+                        $('#results').html(`
+                            <div style="color: red;">
+                                Error: ${textStatus}<br>
+                                ${errorThrown}
+                            </div>
+                        `);
+                    });
+            });
+        });
+    </script>
+</body>
+</html> 
